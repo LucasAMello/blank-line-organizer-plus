@@ -50,7 +50,8 @@ function processLines(lines: vscode.TextLine[]): string[] {
                     if (prevLine.isEmptyOrWhitespace && beginsWithClosingBracket(line.text)) { a.pop(); }
                 }
 
-                if (config.insertLineAfterBlock && prevLine.text.trim() === '}' && !line.isEmptyOrWhitespace && !beginsWithClosingBracket(line.text)) { a.push(null); }
+                if (config.insertLineAfterBlock && prevLine.text.trim() === '}' && !line.isEmptyOrWhitespace &&
+                    !beginsWithClosingBracket(line.text) && !beginsWithClosingTag(line.text)) { a.push(null); }
             }
 
             if (config.keepOneEmptyLine !== true && line.isEmptyOrWhitespace) { return a; }
@@ -62,7 +63,13 @@ function processLines(lines: vscode.TextLine[]): string[] {
 function beginsWithClosingBracket(text: string) {
     const trimmed = text.trim()[0];
     if (trimmed.length === 0) { return false; }
-    return trimmed[0] === '}' || trimmed[0] === ']' || trimmed[0] === ')';
+    return trimmed === '}' || trimmed === ']' || trimmed === ')';
+}
+
+function beginsWithClosingTag(text: string) {
+    const trimmed = text.trim();
+    if (trimmed.length === 0) { return false; }
+    return trimmed[0] === '<' && trimmed[1] === '/';
 }
 
 function selectLines(editor: vscode.TextEditor, start: number, end: number) {

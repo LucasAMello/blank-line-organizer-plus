@@ -1,3 +1,8 @@
+# v0.5.1
+
+* fix: insertLineAfterBlock ignores closing tags (like </script>, useful for Vue)
+
+
 # v0.2.0
 
 * feature: restored insertLineAfterBlock and added removeBlockPadding
