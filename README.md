@@ -8,11 +8,11 @@ This extension will help you organize blank lines in the code by removing multip
 
 ## Usage
 
-Press `Ctrl + ;` / `Cmd + ;`
+Press `Ctrl/Cmd + Shift + B`
 
 or
 
-Enter `Ctrl/Cmd + P` search for `> Remove blank lines`
+Enter `Ctrl/Cmd + Shift + P` search for `> Remove blank lines`
 
 or
 
@@ -25,6 +25,8 @@ Set triggerOnSave to true and save the file
 | blankLine.keepOneEmptyLine      | `boolean` | `true`        | Set to false to remove all blank lines or true to keep one.
 | blankLine.triggerOnSave         | `boolean` | `true`        | If set to true, the command will be triggered on save.
 | blankLine.insertLineAfterBlock  | `boolean` | `true`        | If set to true inserts a blank line after block statement (unless the next line is also closing a block).
+| blankLine.allowElseAfterBlock   | `boolean` | `true`        | If set to true won't insert a blank line after block statement if next line is an else.
+| blankLine.formatIfElseBlock     | `string`  | `1tbs`        | Defines if and how to format if-else blocks. More information and examples [here](https://eslint.org/docs/rules/brace-style.html).
 | blankLine.removeBlockPadding    | `boolean` | `true`        | If set to true removes all blank lines after opening and before closing a block statement.
 | blankLine.languageIds           | `string[]`| `["javascript", "typescript", "json", "css", "scss"]` | Trigger this command on save, only if current language-id is in the list
 

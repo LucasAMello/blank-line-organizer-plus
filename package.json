@@ -2,7 +2,7 @@
     "name": "blanklineplus",
     "displayName": "Blank Line Plus",
     "description": "Removes unnecessary blank lines and adds if needed",
-    "version": "0.7.0",
+    "version": "0.8.1",
     "publisher": "LucasAMello",
     "icon": "images/icon.png",
     "engines": {
@@ -31,8 +31,8 @@
             {
                 "command": "blankLinePlus.process",
                 "title": "Remove blank lines",
-                "key": "ctrl+;",
-                "mac": "cmd+;"
+                "key": "ctrl+shift+b",
+                "mac": "cmd+shift+b"
             }
         ],
         "configuration": {
@@ -53,6 +53,23 @@
                     "type": "boolean",
                     "default": true,
                     "description": "If set to true inserts a blank line after block statement (unless the next line is also closing a block)."
+                },
+                "blankLinePlus.allowElseAfterBlock": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "If set to true won't insert a blank line after block statement if next line is an else."
+                },
+                "blankLinePlus.formatIfElseBlock": {
+                    "type": "string",
+                    "default": "1tbs",
+                    "description": "Defines if and how to format if-else blocks.",
+                    "enum": ["1tbs", "stroustrup", "allman", "off"],
+                    "enumDescriptions": [
+                        "Opening and closing braces on the same line.",
+                        "Opening brace on the same line, closing brace on own line.",
+                        "Opening and closing braces on own line.",
+                        "Don't format if-else blocks."
+                    ]
                 },
                 "blankLinePlus.removeBlockPadding": {
                     "type": "boolean",
