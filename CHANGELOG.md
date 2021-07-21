@@ -1,3 +1,7 @@
+# v0.8.2
+
+* formatIfElseBlock: Added support for try/catch/finally blocks, fixed bug for allman style
+
 # v0.8.0
 
 * allowElseAfterBlock: If set to true won't insert a blank line after block statement if next line is an else

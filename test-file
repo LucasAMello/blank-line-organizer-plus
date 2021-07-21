@@ -1,0 +1,30 @@
+function foo() {
+    return true;
+}
+
+if (foo)
+{
+    bar();
+}
+
+if (foo) {
+    bar();
+} else if (foo) {
+
+}
+else {
+    baz();
+}
+
+try {
+    somethingRisky();
+} catch(e) {
+    handleError();
+}
+finally{
+    console.log("finally");
+}
+
+// when there are no braces, no problems
+if (foo) bar();
+else if (baz) boom();

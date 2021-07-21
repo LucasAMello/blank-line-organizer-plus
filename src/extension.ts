@@ -94,18 +94,30 @@ function processLines(lines: vscode.TextLine[]): string[] {
 
             if (config.formatIfElseBlock === 'stroustrup' || config.formatIfElseBlock === 'allman') {
                 // If line starts with '} else', split
-                if (lineTrimmed.startsWith('} else')) {
+                if (lineTrimmed.startsWith('}') && testWords(lineTrimmed, ['else', 'catch', 'finally'])) {
                     const index = line.text.indexOf('}');
                     a.push(line.text.substr(0, index + 1));
-                    a.push(line.text.substr(0, index) + line.text.substr(index + 2));
-                    return a;
+
+                    const newLine = line.text.substr(0, index) + line.text.substr(index + 2);
+                    const newLineTrimmed = newLine.trim();
+                    if (config.formatIfElseBlock === 'allman') {
+                        // If line has other text and ends with '{', split
+                        if (isIfOrElseWithOpenBrace(newLineTrimmed)) {
+                            a.push(newLine.substr(0, newLineTrimmed.length - 1));
+                            const firstNonWhitespaceCharacterIndex = newLine.length - newLine.trimStart().length;
+                            a.push(newLine.substr(0, firstNonWhitespaceCharacterIndex) + '{');
+                            return a;
+                        }
+                    } else {
+                        a.push(newLine);
+                    }
                 }
             }
 
             if (config.formatIfElseBlock === 'allman') {
                 // If line has other text and ends with '{', split
                 if (isIfOrElseWithOpenBrace(lineTrimmed)) {
-                    a.push(line.text.substr(0, lineTrimmed.length - 1));
+                    a.push(line.text.substr(0, line.text.length - 1));
                     a.push(line.text.substr(0, line.firstNonWhitespaceCharacterIndex) + '{');
                     return a;
                 }
@@ -143,22 +155,29 @@ function startsWithClosingBraceOrTag(text: string) {
     return startsWithClosingBrace(text) || startsWithClosingTag(text);
 }
 
+function testWord(text: string, word: string) {
+    const regexp = new RegExp('\\b' + word + '\\b');
+    return regexp.test(text);
+}
+
+function testWords(text: string, words: string[]) {
+    return words.some(word => testWord(text, word));
+}
+
 function startsWithElse(text: string) {
     const trimmed = text.trim();
     if (trimmed.length === 0) { return false; }
-    return trimmed.startsWith('else');
+    return testWords(trimmed, ['else', 'catch', 'finally']);
 }
 
 function isIfOrElseWithOpenBrace(text: string) {
     const trimmed = text.trim();
-    return (trimmed.startsWith('if (') || trimmed.startsWith('else') || trimmed.startsWith('} else')) &&
-        trimmed.endsWith('{');
+    return testWords(trimmed, ['if', 'else', 'try', 'catch', 'finally']) && trimmed.endsWith('{');
 }
 
 function isIfOrElseWithoutOpenBrace(text: string) {
     const trimmed = text.trim();
-    return (trimmed.startsWith('if (') || trimmed.startsWith('else') || trimmed.startsWith('} else')) &&
-        (trimmed.endsWith(')') || trimmed.endsWith('else'));
+    return testWords(trimmed, ['if', 'else', 'try', 'catch', 'finally']) && !trimmed.endsWith('{');
 }
 
 function selectLines(editor: vscode.TextEditor, start: number, end: number) {
