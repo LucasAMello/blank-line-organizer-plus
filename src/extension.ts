@@ -106,11 +106,12 @@ function processLines(lines: vscode.TextLine[]): string[] {
                             a.push(newLine.substr(0, newLineTrimmed.length - 1));
                             const firstNonWhitespaceCharacterIndex = newLine.length - newLine.trimStart().length;
                             a.push(newLine.substr(0, firstNonWhitespaceCharacterIndex) + '{');
-                            return a;
                         }
                     } else {
                         a.push(newLine);
                     }
+
+                    return a;
                 }
             }
 
@@ -167,7 +168,7 @@ function testWords(text: string, words: string[]) {
 function startsWithElse(text: string) {
     const trimmed = text.trim();
     if (trimmed.length === 0) { return false; }
-    return testWords(trimmed, ['else', 'catch', 'finally']);
+    return testWords(trimmed, ['else', 'catch', 'finally']) && !trimmed.startsWith('}');
 }
 
 function isIfOrElseWithOpenBrace(text: string) {
